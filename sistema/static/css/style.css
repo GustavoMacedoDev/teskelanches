@@ -1,0 +1,17 @@
+.pedidos {
+    color: black !important;
+    font-size: 28px;
+
+}
+
+body {
+     padding: 15px;
+}
+
+.btn-pedidos {
+    background-color:#6495ed;
+    margin-right: 50px;
+    height: 80px;
+    width: 100px;
+    border-radius: 10px 20px;
+ }

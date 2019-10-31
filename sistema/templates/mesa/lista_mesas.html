@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block title %}
+Listagem de Mesas
+{% endblock title %}
+
+{% block tituloPagina %}
+Listagem de Mesas
+{% endblock tituloPagina %}
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Número da Mesa</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for m in mesa %}
+  <tr>
+    <td><a href="{% url 'lista_pedidos_mesa' pk=m.pk %}"><button class="btn btn-primary">{{ m.numero_mesa}}</button></a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+{% block title %}
+Cadastro de Pedidos
+{% endblock title %}
+
+{% block tituloPagina %}
+Cadastro de Pedidos
+{% endblock tituloPagina %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+            <div class="col-md-12">
+                {{ form.numero_pedido|as_crispy_field }}
+            </div>
+    </div>
+    <div class="row">
+            <div class="col-md-12">
+                {{ form.lanche|as_crispy_field }}
+            </div>
+    </div>
+    <div class="row">
+            <div class="col-md-12">
+                {{ form.bebida|as_crispy_field }}
+            </div>
+    </div>
+    <div class="row">
+            <div class="col-md-12">
+                {{ form.adicional|as_crispy_field }}
+            </div>
+    </div>
+<button type="submit" class="btn btn-primary">
+    Salvar
+</button>
+</form>
+
+{% endblock content %}

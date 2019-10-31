@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block title %}
+Listagem de Pessoas
+{% endblock title %}
+
+{% block tituloPagina %}
+Listagem de Pessoas
+{% endblock tituloPagina %}
+{% block content %}
+    <table class="table">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>AÇÃO</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for pes in pessoa %}
+    <tr>
+      <td>{{ pes.nome }}</td>
+      <td>{{ pes.cpf }}</td>
+      <td>
+          <a href="{% url 'pessoa_edit' pk=pes.pk %}">
+             <span  class="glyphicon glyphicon-pencil"></span>
+          </a>
+          <a href="{% url 'pessoa_delete' pk=pes.pk %}">
+              <span class="glyphicon glyphicon-trash"></span>
+          </a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'pessoa_new' %}">
+  <button type="submit" class="btn btn-primary">
+    Cadastrar
+  </button>
+</a>
+
+
+{% endblock content %}

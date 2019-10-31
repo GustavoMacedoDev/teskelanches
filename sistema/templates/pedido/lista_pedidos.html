@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% block title %}
+Listagem de Pedidos
+{% endblock title %}
+
+{% block tituloPagina %}
+Listagem de Mesas
+{% endblock tituloPagina %}
+{% block content %}
+
+  {% for ped in pedido %}
+      <a class="pedidos" href="{% url 'lista_pedidos_lanche' pk=ped.pk %}">
+        <button class="btn-pedidos">
+          {{ ped.numero_pedido }}
+        </button>
+      </a>
+
+  {% endfor %}
+<hr >
+<a href="{% url 'pedido_new' %}">
+  <button type="submit" class="btn btn-primary">
+    Nova Mesa
+  </button>
+</a>
+
+
+{% endblock content %}

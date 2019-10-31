@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+Remoção de Pedido
+{% endblock title %}
+
+{% block tituloPagina %}
+Remoção de Pedido
+{% endblock tituloPagina %}
+
+{% block content %}
+<form method="post">{% csrf_token %}
+    <h4>Tem certeza que deseja excluir o pedido "{{ pedido.numero }}"?</h4>
+    <br/>
+<button type="submit" class="btn btn-primary">
+    Remover
+</button>
+</form>
+
+{% endblock content %}
