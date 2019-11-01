@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% block title %}
+Listagem de Bebidas
+{% endblock title %}
+
+{% block tituloPagina %}
+Listagem de Bebidas
+{% endblock tituloPagina %}
+{% block content %}
+
+    {% for beb in bebida %}
+        <a class="btn btn-primary" href="{% url 'bebida_edit' pk=beb.pk %}">
+            <button class="btn-pedidos">
+                {{ beb.nome }}
+            </button>
+        </a>
+
+ {% endfor %}
+<hr >
+<a href="{% url 'bebida_new' %}">
+  <button type="submit" class="btn btn-primary">
+    Nova Bebida
+  </button>
+</a>
+
+
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block title %}
+Tela de Bebidas
+{% endblock title %}
+
+{% block tituloPagina %}
+Tela de Bebidas
+{% endblock tituloPagina %}
+
+{% block content %}
+
+<form method="post">
+        {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+    <a href="{% url 'lista_bebidas' %}" >
+        <button class="btn btn-primary">Cancelar</button>
+    </a>
+</form>
+
+{% endblock content %}

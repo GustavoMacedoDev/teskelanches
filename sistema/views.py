@@ -18,9 +18,74 @@ class LancheForm(ModelForm):
         fields = ['nome', 'valor']
 
 
+class BebidaForm(ModelForm):
+    class Meta:
+        model = Bebida
+        fields = ['nome', 'valor']
+
+
 def index(request, template_name='home/index.html'):
     return render(request, template_name)
 
+
+def lista_lanches(request, template_name='lanche/lista_lanches.html'):
+    lanche = Lanche.objects.all()
+    lanches = {'lanche': lanche}
+    return render(request, template_name, lanches)
+
+
+def lanche_new(request, template_name='lanche/lanche_form.html'):
+    form = LancheForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('lista_lanches')
+    return render(request, template_name, {'form': form })
+
+
+def lanche_edit(request, pk, template_name='lanche/lanche_form.html'):
+    lanche = get_object_or_404(Lanche, pk=pk)
+    if request.method == "POST":
+        form = LancheForm(request.POST, instance=lanche)
+        if form.is_valid():
+            lanche = form.save()
+            return redirect('lista_lanches')
+    else:
+        form = LancheForm(instance=lanche)
+    return render(request, template_name, {'form': form})
+
+
+def lanche_delete(request, pk, template_name='lanche/lanche_delete.html'):
+    lanche = Lanche.objects.get(pk=pk)
+    if request.method == "POST":
+        lanche.delete()
+        return redirect('lista_lanches')
+    return render(request, template_name, {'lanche': lanche})
+
+
+def lista_bebidas(request, template_name='bebida/lista_bebidas.html'):
+    bebida = Bebida.objects.all()
+    bebidas = {'bebida': bebida}
+    return render(request, template_name, bebidas)
+
+
+def bebida_new(request, template_name='bebida/bebida_form.html'):
+    form = BebidaForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('lista_bebidas')
+    return render(request, template_name, {'form': form})
+
+
+def bebida_edit(request, pk, template_name='bebida/bebida_form.html'):
+    bebida = get_object_or_404(Bebida, pk=pk)
+    if request.method == "POST":
+        form = BebidaForm(request.POST, instance=bebida)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_bebidas')
+    else:
+        form = BebidaForm(instance=bebida)
+    return render(request, template_name, {'form': form})
 
 #Pessoa#
 #def listar_pessoas(request, template_name='pessoa/lista_pessoas.html'):
