@@ -1,16 +1,39 @@
 .pedidos {
     color: black !important;
     font-size: 28px;
+    text-decoration: none;
 
 }
 
 body {
      padding: 15px;
+     background: url('../img/fundo.jpg');
+     color: #fff;
 }
 
+.form-control {
+    width: 400px;
+}
+
+hr {
+	width: 70%;
+	text-align: left; /* Para o IE */
+	margin: 30px auto 30px 0; /* Para navegadores standard */
+}
+
+.telas {
+    width: 70%;
+
+}
+
+.titulo {
+    color: white;
+
+}
 .btn-pedidos {
     background-color:#6495ed;
     margin-right: 50px;
+    margin-bottom: 30px;
     height: 80px;
     width: 100px;
     border-radius: 10px 20px;

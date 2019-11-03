@@ -11,8 +11,8 @@ Listagem de Bebidas
 {% block content %}
 
     {% for beb in bebida %}
-        <a class="btn btn-primary" href="{% url 'bebida_edit' pk=beb.pk %}">
-            <button class="btn-pedidos">
+        <a href="{% url 'bebida_edit' pk=beb.pk %}">
+            <button class="btn btn-primary btn-pedidos">
                 {{ beb.nome }}
             </button>
         </a>

@@ -3,25 +3,33 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    {% load staticfiles %}
 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <meta charset="UTF-8">
     <title>Página Inicial</title>
 </head>
 {% block content %}
 <body>
-    <h1>Pagina inicial</h1>
+    <h1 class="titulo">Sistema Teske Lanches</h1>
 
-    <a href="{% url 'listar_pedidos' %}" class="buton">
-        <button>Pedidos</button>
-    </a>
+    <hr  />
 
-    <a href="{% url 'lista_lanches' %}" class="buton">
-        <button>Lanches</button>
-    </a>
+    <div class="telas">
+        <a href="{% url 'listar_pedidos' %}">
+            <button class="btn btn-primary btn-pedidos">Pedidos</button>
+        </a>
+        <a href="{% url 'lista_lanches' %}">
+            <button class="btn btn-primary btn-pedidos">Lanches</button>
+        </a>
+        <a href="{% url 'lista_bebidas' %}">
+            <button class="btn btn-primary btn-pedidos">Bebidas</button>
+        </a>
+        <a href="{% url 'lista_ingredientes' %}">
+            <button  class="btn btn-primary btn-pedidos">Ingredientes</button>
+        </a>
+    </div>
 
-    <a href="{% url 'lista_bebidas' %}" class="buton">
-        <button>Bebidas</button>
-    </a>
 </body>
 {% endblock content %}
 </html>

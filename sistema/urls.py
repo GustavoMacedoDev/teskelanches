@@ -2,7 +2,8 @@ from django.conf.urls import url
 from .views import *
 
 urlpatterns = [
-    url(r'^home/index', index),
+    url(r'^home/index', index, name='index'),
+    url(r'^home/home', home, name='nome'),
 #    url(r'^pessoa/lista_pessoas/', listar_pessoas, name='listar_pessoas'),
  #   url(r'^pessoa/pessoa_new/', pessoa_new, name='pessoa_new'),
   #  url(r'^pessoa/pessoa_edit/(?P<pk>[0-9]+)', pessoa_edit, name='pessoa_edit'),
@@ -22,6 +23,17 @@ urlpatterns = [
 
     url(r'^bebida/lista_bebidas', lista_bebidas, name='lista_bebidas'),
     url(r'^bebida/bebida_new', bebida_new, name='bebida_new'),
-    url(r'^bebida/bebida_edit/(?P<pk>[0-9]+)', bebida_edit, name='bebida_edit')
+    url(r'^bebida/bebida_edit/(?P<pk>[0-9]+)', bebida_edit, name='bebida_edit'),
+
+
+    url(r'^ingrediente/lista_ingrediente', lista_ingredientes, name='lista_ingredientes'),
+    url(r'^ingrediente/ingrediente_new', ingrediente_new, name='ingrediente_new'),
+    url(r'^ingrediente/ingrediente_edit/(?P<pk>[0-9]+)', ingrediente_edit, name='ingrediente_edit'),
+
+
+    url(r'^caixa/caixa_new', caixa_new, name='caixa_new'),
+
+
+    url(r'^lancamento/lancamento_new', lancamento_new, name='lancamento_new')
 
 ]

@@ -2,26 +2,28 @@
 {% load static %}
 {% load bootstrap3 %}
 {% block title %}
-Listagem de Lanches
+Listagem de Ingredientes
 {% endblock title %}
 
 {% block tituloPagina %}
-Listagem de Lanches
+<div class="titulo">Listagem de Ingredientes</div>
 {% endblock tituloPagina %}
 {% block content %}
 
-    {% for lan in lanche %}
-        <a href="{% url 'lanche_edit' pk=lan.pk %}">
-            <button class="btn btn-primary btn-pedidos">
-                {{ lan.nome }}
+    {% for ing in ingrediente %}
+        <a href="{% url 'ingrediente_edit' pk=ing.pk %}">
+            <button class="btn btn-primary">
+                {{ ing.nome }}
             </button>
         </a>
-
  {% endfor %}
-<hr >
-<a href="{% url 'lanche_new' %}">
+
+<br>
+<br>
+<br>
+<a href="{% url 'ingrediente_new' %}">
   <button type="submit" class="btn btn-primary">
-    Novo Lanche
+    Novo Ingrediente
   </button>
 </a>
 

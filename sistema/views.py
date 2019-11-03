@@ -1,6 +1,8 @@
+from django.db.models import Sum
 from django.forms import ModelForm
 from django.shortcuts import render, redirect, get_object_or_404
 
+from sistema.forms import CaixaForm
 from sistema.models import *
 
 # Create your views here.
@@ -15,7 +17,7 @@ class PedidoForm(ModelForm):
 class LancheForm(ModelForm):
     class Meta:
         model = Lanche
-        fields = ['nome', 'valor']
+        fields = ['nome', 'valor', 'ingrediente']
 
 
 class BebidaForm(ModelForm):
@@ -24,7 +26,23 @@ class BebidaForm(ModelForm):
         fields = ['nome', 'valor']
 
 
+class IngredienteForm(ModelForm):
+    class Meta:
+        model = Ingrediente
+        fields = ['nome']
+
+
+class LancamentoForm(ModelForm):
+    class Meta:
+        model = Lancamento
+        fields = ['observacao', 'caixa']
+
+
 def index(request, template_name='home/index.html'):
+    return render(request, template_name)
+
+
+def home(request, template_name='home/home.html'):
     return render(request, template_name)
 
 
@@ -87,6 +105,33 @@ def bebida_edit(request, pk, template_name='bebida/bebida_form.html'):
         form = BebidaForm(instance=bebida)
     return render(request, template_name, {'form': form})
 
+
+def lista_ingredientes(request, template_name='ingrediente/lista_ingredientes.html'):
+    ingrediente = Ingrediente.objects.all()
+    ingredientes = {'ingrediente': ingrediente}
+    return render(request, template_name, ingredientes)
+
+
+def ingrediente_new(request, template_name='ingrediente/ingrediente_form.html'):
+    form = IngredienteForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('lista_ingredientes')
+    return render(request, template_name, {'form': form})
+
+
+def ingrediente_edit(request, pk, template_name='ingrediente/ingrediente_form.html'):
+    ingrediente = get_object_or_404(Ingrediente, pk=pk)
+    if request.method == "POST":
+        form = IngredienteForm(request.POST, instance=ingrediente)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_ingredientes')
+    else:
+        form = IngredienteForm(instance=ingrediente)
+    return render(request, template_name, {'form': form})
+
+
 #Pessoa#
 #def listar_pessoas(request, template_name='pessoa/lista_pessoas.html'):
   #  pessoa = Pessoa.objects.all()
@@ -124,7 +169,7 @@ def bebida_edit(request, pk, template_name='bebida/bebida_form.html'):
 
 #Pedidos
 def listar_pedidos(request, template_name='pedido/lista_pedidos.html'):
-    pedido = Pedido.objects.all()
+    pedido = Pedido.objects.filter(status="ATIVO")
     pedidos = {'pedido': pedido}
     return render(request, template_name, pedidos)
 
@@ -162,4 +207,28 @@ def lista_pedidos_lanche(request, pk, template_name='pedido/pedido_lanche_list.h
     bebidas = Bebida.objects.filter(pedido=pk)
     adicionais = Adicional.objects.filter(pedido=pk)
     pedido = get_object_or_404(Pedido, pk=pk)
-    return render(request, template_name, {'lanches': lanches, 'bebidas': bebidas, 'adicionais': adicionais, 'pedido': pedido })
+    total = Bebida.objects.all().aggregate(sum('valor'))
+
+    return render(request, template_name, {'lanches': lanches, 'bebidas': bebidas, 'adicionais': adicionais, 'pedido': pedido}, total)
+
+
+def caixa_new(request, template_name='caixa/caixa_form.html'):
+    form = CaixaForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_pedidos')
+    return render(request, template_name, {'form': form})
+
+
+def lista_caixa(request, template_name='caixa/lista_caixa.html'):
+    caixa = Caixa.objects.filter(status="aberto")
+    caixas = {'caixa': caixa}
+    return render(request, template_name, caixas)
+
+
+def lancamento_new(request, template_name='lancamento/lancamento_form.html'):
+    form = LancamentoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_pedidos')
+    return render(request, template_name, {'form': form})

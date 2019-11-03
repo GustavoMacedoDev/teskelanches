@@ -22,7 +22,6 @@ Listagem de Pedidos
     <tr>
       <td>{{ lan.nome }}</td>
       <td>{{ lan.valor }}</td>
-
     </tr>
   {% endfor %}
    <tr>
@@ -47,8 +46,12 @@ Listagem de Pedidos
 
     </tr>
   {% endfor %}
+
+  {{ total }}
+
   </tbody>
 </table>
+
 
 <button><a href="{% url 'pedido_edit' pk=pedido.pk %}">Editar Pedido</a></button>
 

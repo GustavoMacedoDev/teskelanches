@@ -1,17 +1,20 @@
 from django.db import models
 
 # Create your models here.
-from django.http import JsonResponse
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django import forms
 
-#from sistema.serializers import LancheSerializer
+
+class Ingrediente(models.Model):
+    nome = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.nome)
 
 
 class Lanche(models.Model):
     nome = models.CharField(max_length=50)
     valor = models.DecimalField(max_digits=20, decimal_places=2)
+    ingrediente = models.ManyToManyField(Ingrediente, blank=True)
 
     def __str__(self):
         return self.nome
@@ -34,26 +37,40 @@ class Adicional(models.Model):
 
 
 class Pedido(models.Model):
+    STATUS = (
+        ("ATIVO", 'ativo'),
+        ("CANCELADO", "cancelado"),
+        ("BAIXADO", "baixado")
+
+    )
     numero_pedido = models.CharField(max_length=5, unique=True)
     lanche = models.ManyToManyField(Lanche, blank=True)
     bebida = models.ManyToManyField(Bebida, blank=True)
     adicional = models.ManyToManyField(Adicional, blank=True)
+    status = models.CharField(max_length=50, choices=STATUS, default="ATIVO")
 
     def __str__(self):
         return str(self.numero_pedido)
 
 
+class Caixa(models.Model):
+    STATUS = (
+        ("ABERTO", "Aberto"),
+        ("FECHADO", "fechado")
+    )
 
-#APi
+    data_abertura = models.DateField(null=False, verbose_name="Data de Abertura")
+    data_fechamento = models.DateField(null=True, verbose_name="Data de Fechamento")
+    observacao = models.CharField(max_length=50, verbose_name="Observação")
+    status = models.CharField(max_length=10, choices=STATUS, default="ABERTO")
+
+    def __str__(self):
+        return str(self.data_abertura)
 
 
-#class LancheList(APIView):
-    def pos(self, request):
-        try:
-            serializer = LancheSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
-            return JsonResponse({'mensagem': "Ocorreu um erro"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class Lancamento(models.Model):
+    observacao = models.CharField(max_length=50, verbose_name="Observação")
+    caixa = models.ForeignKey(Caixa, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.observacao

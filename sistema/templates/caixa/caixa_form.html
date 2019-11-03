@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+{% block title %}
+Caixa
+{% endblock title %}
+
+{% block tituloPagina %}
+Caixa
+{% endblock tituloPagina %}
+
+{% block content %}
+<form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                {{ form.data_abertura|as_crispy_field }}
+            </div>
+            <div class="col-md-12">
+                {{ form.data_fechamento|as_crispy_field }}
+            </div>
+            <div class="col-md-12">
+                {{ form.observacao|as_crispy_field }}
+            </div>
+        </div>
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+</form>
+
+{% endblock content %}
