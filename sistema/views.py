@@ -221,7 +221,7 @@ def caixa_new(request, template_name='caixa/caixa_form.html'):
 
 
 def lista_caixa(request, template_name='caixa/lista_caixa.html'):
-    caixa = Caixa.objects.filter(status="aberto")
+    caixa = Caixa.objects.filter(status="ABERTO")
     caixas = {'caixa': caixa}
     return render(request, template_name, caixas)
 

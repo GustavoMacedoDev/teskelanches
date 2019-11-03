@@ -1,7 +1,26 @@
+import datetime
+from datetime import date
+
 from django.db import models
 
 # Create your models here.
 from django import forms
+
+
+class Caixa(models.Model):
+    STATUS = (
+        ("ABERTO", "Aberto"),
+        ("FECHADO", "fechado")
+    )
+
+    data_abertura = models.DateField(datetime.now())
+    data_fechamento = models.DateField(null=True, verbose_name="Data de Fechamento")
+    observacao = models.CharField(max_length=50, verbose_name="Observação")
+    status = models.CharField(max_length=10, choices=STATUS, default="ABERTO")
+
+    def __str__(self):
+        return str(self.data_abertura)
+
 
 
 class Ingrediente(models.Model):
@@ -48,24 +67,11 @@ class Pedido(models.Model):
     bebida = models.ManyToManyField(Bebida, blank=True)
     adicional = models.ManyToManyField(Adicional, blank=True)
     status = models.CharField(max_length=50, choices=STATUS, default="ATIVO")
+    caixa = models.ForeignKey(Caixa, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.numero_pedido)
 
-
-class Caixa(models.Model):
-    STATUS = (
-        ("ABERTO", "Aberto"),
-        ("FECHADO", "fechado")
-    )
-
-    data_abertura = models.DateField(null=False, verbose_name="Data de Abertura")
-    data_fechamento = models.DateField(null=True, verbose_name="Data de Fechamento")
-    observacao = models.CharField(max_length=50, verbose_name="Observação")
-    status = models.CharField(max_length=10, choices=STATUS, default="ABERTO")
-
-    def __str__(self):
-        return str(self.data_abertura)
 
 
 class Lancamento(models.Model):

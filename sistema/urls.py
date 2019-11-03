@@ -32,6 +32,7 @@ urlpatterns = [
 
 
     url(r'^caixa/caixa_new', caixa_new, name='caixa_new'),
+    url(r'^caixa/lista_caixa', lista_caixa, name='lista_caixa'),
 
 
     url(r'^lancamento/lancamento_new', lancamento_new, name='lancamento_new')
