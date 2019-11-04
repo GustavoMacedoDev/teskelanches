@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^pedido/pedido_edit/(?P<pk>[0-9]+)', pedido_edit, name='pedido_edit'),
     url(r'^pedido/pedido_delete/(?P<pk>[0-9]+)', pedido_delete, name='pedido_delete'),
     url(r'^pedido/lanche/(?P<pk>[0-9]+)', lista_pedidos_lanche, name='lista_pedidos_lanche'),
+    url(r'^pedido/fecha_pedido/(?P<pk>[0-9]+)', fechar_pedido, name='fechar_pedido'),
 
     url(r'^lanche/lista_lanches', lista_lanches, name='lista_lanches'),
     url(r'^lanche/lanche_new', lanche_new, name='lanche_new'),

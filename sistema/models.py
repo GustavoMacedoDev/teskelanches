@@ -13,14 +13,13 @@ class Caixa(models.Model):
         ("FECHADO", "fechado")
     )
 
-    data_abertura = models.DateField(datetime.now())
+    data_abertura = models.DateField(datetime.date)
     data_fechamento = models.DateField(null=True, verbose_name="Data de Fechamento")
     observacao = models.CharField(max_length=50, verbose_name="Observação")
     status = models.CharField(max_length=10, choices=STATUS, default="ABERTO")
 
     def __str__(self):
-        return str(self.data_abertura)
-
+        return self.observacao
 
 
 class Ingrediente(models.Model):
@@ -62,7 +61,7 @@ class Pedido(models.Model):
         ("BAIXADO", "baixado")
 
     )
-    numero_pedido = models.CharField(max_length=5, unique=True)
+    numero_pedido = models.CharField(max_length=5)
     lanche = models.ManyToManyField(Lanche, blank=True)
     bebida = models.ManyToManyField(Bebida, blank=True)
     adicional = models.ManyToManyField(Adicional, blank=True)
@@ -73,10 +72,15 @@ class Pedido(models.Model):
         return str(self.numero_pedido)
 
 
-
 class Lancamento(models.Model):
+    OPERACAO = (
+        ("CREDITO", "credito"),
+        ("DEBITO", "debito"),
+        ("DINHEIRO", "dinheiro")
+    )
     observacao = models.CharField(max_length=50, verbose_name="Observação")
-    caixa = models.ForeignKey(Caixa, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    operacao = models.CharField(max_length=50, choices=OPERACAO)
 
     def __str__(self):
         return self.observacao

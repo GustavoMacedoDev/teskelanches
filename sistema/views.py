@@ -1,3 +1,4 @@
+from django.db import connection
 from django.db.models import Sum
 from django.forms import ModelForm
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,7 +12,7 @@ from sistema.models import *
 class PedidoForm(ModelForm):
     class Meta:
         model = Pedido
-        fields = ['numero_pedido', 'lanche', 'bebida', 'adicional']
+        fields = ['numero_pedido', 'lanche', 'bebida', 'adicional', 'caixa']
 
 
 class LancheForm(ModelForm):
@@ -35,7 +36,7 @@ class IngredienteForm(ModelForm):
 class LancamentoForm(ModelForm):
     class Meta:
         model = Lancamento
-        fields = ['observacao', 'caixa']
+        fields = ['observacao', 'pedido', 'operacao']
 
 
 def index(request, template_name='home/index.html'):
@@ -175,6 +176,7 @@ def listar_pedidos(request, template_name='pedido/lista_pedidos.html'):
 
 
 def pedido_new(request, template_name='pedido/pedido_form.html'):
+    caixa = Caixa.objects.filter(status="ABERTO")
     form = PedidoForm(request.POST or None)
     if form.is_valid():
        form.save()
@@ -204,12 +206,40 @@ def pedido_delete(request, pk, template_name='pedido/pedido_delete.html'):
 
 def lista_pedidos_lanche(request, pk, template_name='pedido/pedido_lanche_list.html'):
     lanches = Lanche.objects.filter(pedido=pk)
+    totallanches = Lanche.objects.filter(pedido=pk).aggregate(Sum('valor'))
     bebidas = Bebida.objects.filter(pedido=pk)
+    totalbebidas = Bebida.objects.filter(pedido=pk).aggregate(Sum('valor'))
     adicionais = Adicional.objects.filter(pedido=pk)
+    totaladicionais = Adicional.objects.filter(pedido=pk).aggregate(Sum('valor'))
     pedido = get_object_or_404(Pedido, pk=pk)
-    total = Bebida.objects.all().aggregate(sum('valor'))
 
-    return render(request, template_name, {'lanches': lanches, 'bebidas': bebidas, 'adicionais': adicionais, 'pedido': pedido}, total)
+    totalb = totalbebidas['valor__sum']
+    totall = totallanches['valor__sum']
+    totala = totaladicionais['valor__sum']
+
+    total = totall + totalb + totala
+
+    return render(request, template_name, {'lanches': lanches, 'bebidas': bebidas,
+                                           'adicionais': adicionais, 'pedido': pedido,
+                                           'totallanches': totallanches, 'totalbebidas': totalbebidas,
+                                           'total': total, 'totaladicionais': totaladicionais})
+
+
+def fechar_pedido(request, pk, template_name='pedido/fecha_pedido.html'):
+    form = LancamentoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        altera_status_pedido(self=pk)
+        return redirect('listar_pedidos')
+    return render(request, template_name, {'form': form})
+
+
+def altera_status_pedido(self):
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE sistema_pedido set STATUS = 'BAIXADO' WHERE id = %s", [self])
+        #row = cursor.fetchone()
+
+    #return row
 
 
 def caixa_new(request, template_name='caixa/caixa_form.html'):
@@ -232,3 +262,7 @@ def lancamento_new(request, template_name='lancamento/lancamento_form.html'):
         form.save()
         return redirect('listar_pedidos')
     return render(request, template_name, {'form': form})
+
+
+def relatorio_vendas(request, template_name='vendas/vendas.html'):
+    vendas = Pedido.objects.all
