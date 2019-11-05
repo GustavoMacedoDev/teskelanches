@@ -1,9 +1,11 @@
-$("#somar").click(function(){
-    var soma = 0;
-    var totallanches = document.getElementById('totallanche');
-    var totalbebidas = document.getElementById('totalbebidas');
+function mostravalor() {
+    var els = document.getElementsByClassName("valor");
+    var valorcalculado = 0.00;
+    [].forEach.call(els, function (el)
+    {
+        valorcalculado += parseFloat((el.innerHTML));
+    });
 
-    soma = totallanches + totalbebidas;
+    document.getElementById("total").innerHTML = valorcalculado.toFixed(2);
+}
 
-    $(".resultado").html(soma.toFixed(2));
-});

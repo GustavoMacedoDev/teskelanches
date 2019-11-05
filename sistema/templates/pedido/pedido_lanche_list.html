@@ -19,7 +19,7 @@ Listagem de Pedidos
 
     <tr>
       <td>{{ lan.nome }}</td>
-      <td id="input1">{{ lan.valor }}</td>
+      <td class="valor">{{ lan.valor }}</td>
     </tr>
   {% endfor %}
    <tr>
@@ -29,7 +29,7 @@ Listagem de Pedidos
   {% for beb in bebidas %}
     <tr>
       <td>{{ beb.nome }}</td>
-      <td id="input2">{{ beb.valor }}</td>
+      <td class="valor">{{ beb.valor }}</td>
 
     </tr>
   {% endfor %}
@@ -40,14 +40,22 @@ Listagem de Pedidos
   {% for add in adicionais %}
     <tr>
       <td>{{ add.nome }}</td>
-      <td id="input3">{{ add.valor }}</td>
+      <td class="valor">{{ add.valor }}</td>
 
     </tr>
   {% endfor %}
 
-
   </tbody>
+
 </table>
+
+<button onclick="mostravalor()">
+  Somar
+</button>
+
+<div >
+  <p id="total"></p>
+</div>
 
 <a href="{% url 'pedido_edit' pk=pedido.pk %}">
   <button type="submit" class="btn btn-primary">
@@ -60,6 +68,8 @@ Listagem de Pedidos
     Fechar Pedido
   </button>
 </a>
+
+
 
 <hr >
 
